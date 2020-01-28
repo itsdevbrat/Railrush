@@ -1,8 +1,12 @@
 # Railrush
 An AI based Crowd Detection 
 
-Steps :
+Dependencies/Packages :
 npm install --save express
 npm install --save body-parser
 npm install --save multer
-npm install python-shell
+npm install python-shell --save
+
+Steps :
+Download Node
+npm install -y
