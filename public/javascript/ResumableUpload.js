@@ -5,7 +5,9 @@ const fileinputs = document.getElementsByClassName('fileInput')
     , uploadButtons = document.getElementsByClassName('uploadButton')
     , progressBars = document.getElementsByClassName('progressBar')
     , resumeButtons = document.getElementsByClassName('resumeButton')
-    , plusIcons = document.getElementsByClassName('plusIcon') ; 
+    , plusIcons = document.getElementsByClassName('plusIcon')
+    , stationNames = document.getElementsByClassName('stationName') 
+    , date = new Date(); 
 
 
 for(let i=0; i<plusIcons.length;i++)
@@ -37,7 +39,11 @@ const uploadTheFile = (i) =>{
     let socket = io.connect(window.location.host)
     startTime = performance.now()
     //Emit Event 1 : start upload----------------------------------------------------------------------
-    socket.emit('start upload' , {name: inputFiles[i].name, size: inputFiles[i].size, type: inputFiles[i].type})
+    socket.emit('start upload' , {
+        name: inputFiles[i].name, 
+        size: inputFiles[i].size, 
+        type: inputFiles[i].type , 
+        train:{ trainNo: 1, start: "Virar" , dest:"Churchgate" , current:stationNames[i].innerText , timestamp:date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()}})
 
     //Listen to Event 1 : send next block--------------------------------------------------------------
     socket.on('send next block' , (data)=>{
