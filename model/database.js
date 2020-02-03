@@ -22,13 +22,13 @@ connect();
 
 module.exports = {
     updateCrowdInfo: async (trainNo , crowdInfo)=>{
-        try{
-            var r = await db.collection("trains").updateOne({trainNo : ""+trainNo} , {$set : {crowdInfo:{
-                crowdCount : crowdInfo.crowdCount,
-                lastStation: crowdInfo.current,
-                timestamp: crowdInfo.timestamp
-            }}})
-        }catch(e){console.log(e)}
-        return r
+        return await db.collection("trains").updateOne({trainNo : ""+trainNo} , {$set : {crowdInfo:{
+            crowdCount : crowdInfo.crowdCount,
+            lastStation: crowdInfo.current,
+            timestamp: crowdInfo.timestamp
+        }}})
+    },
+    getCrowdCount: async(trainNo)=>{
+        return Object(await db.collection("trains").findOne({trainNo : "1"})).crowdInfo.crowdCount
     }
 }

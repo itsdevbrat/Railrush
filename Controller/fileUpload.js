@@ -2,7 +2,7 @@
 let files = {}  //will hold multiple files with key as the filename
     , blockSize = 1048676    //blockSize we are using is 1MB 
     , uploadDir = '/../Video Uploads/'
-    , {updateCrowdInfo} = require("../model/database")
+    , {updateCrowdInfo , getCrowdCount} = require("../model/database")
     , path = require('path')
     , fs = require('fs')
     , {spawn} = require('child_process');
@@ -10,8 +10,9 @@ let files = {}  //will hold multiple files with key as the filename
 const callScript = (fileName , trainInfo)=>{
     let process = spawn("py" , [path.join(__dirname , "/../CrowdCountModel.py") , path.join(__dirname , "/../Video Uploads/"+fileName)])
     process.stdout.on('data', (data)=>{
-        console.log(typeof Number(data))
-        saveToDatabase(trainInfo , Number(data))
+        console.log(data)
+        let s = data.toString()
+        calculateCrowdCount(trainInfo , Number(s.split(",")[0]) , Number(s.split(",")[1]) , Number(s.split(",")[2]))
     })
     process.stderr.on('data' , (data)=>{
         console.log(data.toString())
@@ -19,6 +20,15 @@ const callScript = (fileName , trainInfo)=>{
     process.on('close',(exitCode)=>{
         console.log("Exit : "+exitCode)
     })
+}
+
+const calculateCrowdCount = async (trainInfo,max,min,alreadyPT)=>{
+    try {
+        let crowdCount = await getCrowdCount(trainInfo.trainNo)
+        saveToDatabase(trainInfo , crowdCount+2*alreadyPT - max - min)    
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 const saveToDatabase = (trainInfo , crowdCount)=>{
