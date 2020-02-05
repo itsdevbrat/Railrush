@@ -29,6 +29,15 @@ module.exports = {
         }}})
     },
     getCrowdCount: async(trainNo)=>{
-        return Object(await db.collection("trains").findOne({trainNo : "1"})).crowdInfo.crowdCount
+        try {
+            let train = await db.collection("trains").findOne({trainNo : ""+trainNo})
+            if(train)
+                return Object(train).crowdInfo.crowdCount
+            else 
+                throw new Error("train doesn't exist") 
+        } catch (error) {
+            console.log("database"+error)
+            throw new Error("train doesn't exist") 
+        }
     }
 }

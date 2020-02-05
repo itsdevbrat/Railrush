@@ -100,7 +100,6 @@ module.exports = (io)=>{
                 callScript(data.fileName , files[data.fileName].train)
                 files[data.fileName] = null
             }
-                
         })
 
         //listen to client event 3 : close connection------------------------------------------------------
