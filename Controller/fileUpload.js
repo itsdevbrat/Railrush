@@ -8,13 +8,19 @@ let files = {}  //will hold multiple files with key as the filename
     , {spawn} = require('child_process');
 
 const callScript = (fileName , trainInfo)=>{
-    let process = spawn("python" , [path.join(__dirname , "/../ML Model/CrowdCountModel.py") , path.join(__dirname , fileName)])
+    let process = spawn("python" , [path.join(__dirname , "/../ML Model/CrowdCountModel.py") , fileName])
     process.stdout.on('data', (data)=>{
-        // console.log(data)
         let s = data.toString()
-        console.log(s)
-        console.log("Model "+Number(s.split(",")[0])+Number(s.split(",")[1])+Number(s.split(",")[2]))
+        console.log("Model "+s.split(",")[0]+s.split(",")[1]+s.split(",")[2])
         calculateCrowdCount(trainInfo , Number(s.split(",")[0]) , Number(s.split(",")[1]) , Number(s.split(",")[2]))
+        fs.rmdir(path.join(__dirname , "/../ML Model/data4/"+fileName),{recursive:true},(err)=>{
+            if(err)
+                console.log('Cant delete dir')
+        })
+        fs.unlink(path.join(__dirname , "/../Video Uploads/"+fileName),(err)=>{
+            if(err)
+                console.log('Cant delete video file')
+        })
     })
     process.stderr.on('data' , (data)=>{
         console.log(data.toString())
@@ -34,10 +40,9 @@ const calculateCrowdCount = async (trainInfo,max,min,alreadyPT)=>{
 }
 
 const saveToDatabase = (trainInfo , crowdCount)=>{
-    console.log(typeof trainInfo.trainNo)
     updateCrowdInfo(trainInfo.trainNo , {current:trainInfo.current , crowdCount:crowdCount , timestamp: trainInfo.timestamp})
         .then((result)=>{
-            console.log(result.result)
+            console.log("DB stats n : "+result.result.n)
         }).catch((e)=>{
             console.log(e)
         })
@@ -86,7 +91,7 @@ module.exports = (io)=>{
         socket.on('a file block',(data)=>{
             files[data.fileName].downloadedData += data.fileBlock
             files[data.fileName].downloadedSize += data.fileBlock.length
-            console.log(data.fileBlock.length+" files[data.fileName].downloadedSize "+files[data.fileName].downloadedSize)
+            console.log(data.fileBlock.length+"  "+files[data.fileName].size+"  "+files[data.fileName].downloadedSize)
             
             if(files[data.fileName].downloadedSize < files[data.fileName].size)
                 socket.emit('send next block',{start: files[data.fileName].downloadedSize , end: files[data.fileName].downloadedSize + blockSize})

@@ -64,10 +64,6 @@ def detect(path):
   ans,img,hmap = predict(path)
   return ans
 
-# import cv2
-# import numpy as np
-# import os
-
 
 
 #Frame creator function
@@ -76,40 +72,18 @@ def getFrame(sec):
     hasFrames,image = cap.read()
     if hasFrames:
       #detect(image)
-        cv2.imwrite(os.path.join(root_dir,'data4/'+str(sec)+' sec.jpg'), image)     # save frame as JPG file
+        cv2.imwrite(os.path.join(root_dir,'data4/'+sys.argv[1]+"/"+str(sec)+' sec.jpg'), image) 
+            # save frame as JPG file
     return hasFrames
 
 # Playing video from file:
 start = time.time()
 cap = cv2.VideoCapture(os.path.join(root_dir,'../Video Uploads/'+sys.argv[1]))
 
-#try:
-   # if not os.path.exists('data1'):
-     #   os.makedirs('data1')
-#except OSError:
-   # print ('Error: Creating directory of data1')
-
-# currentFrame = 0
-# while(True):
-#     # Capture frame-by-frame
-    
-#     ret, frame = cap.read()
-
-    # Saves image of the current frame in jpg file
-    
-    # name = './data/frame' + str(currentFrame) + '.jpg'
-    # print ('Creating...' + name)
-    # cv2.imwrite(name, frame)
-
-    # # To stop duplicate images
-    # currentFrame += 1
-
-# When everything done, release the capture
-# cap.release()
-# cv2.destroyAllWindows()
 sec = 0
 frameRate = 1
 #it will capture image in each 0.5 second
+os.mkdir(os.path.join(root_dir,'data4/'+sys.argv[1]))
 success = getFrame(sec)
 while success:
     sec = sec + frameRate
@@ -120,12 +94,12 @@ cv2.destroyAllWindows()
 end = time.time()
 # print(end - start)
 
-root=''
+
 
 import glob
 start = time.time()
-add = os.path.join(root_dir,'data4')
-getpath=os.path.join(root,add)
+# add = os.path.join(root_dir,'data4')
+getpath=os.path.join(root_dir,'data4/'+sys.argv[1])
 # print(getpath)
 path_sets=[getpath]
 img_paths = []
@@ -158,35 +132,8 @@ for img_path in img_paths:
 
   img=img+1
 
-# print("min :"+min_value+" max :"+max_value+" platform_max under 10sec :"+platform_max)
 end = time.time()
 # print(end-start)
 
-# print("min value : ",min_value)
+print(str(max_value),",",str(min_value),",",str(platform_max))
 
-# print("max value :",max_value)
-
-# print("platform value :",platform_max)
-
-print(max_value+","+min_value+","+platform_max)
-
-# img=cv2.imread('/content/drive/My Drive/Colab Notebooks/data4/32 sec.jpg')
-# cv2_imshow(img)
-# ans=detect('/content/drive/My Drive/Colab Notebooks/data4/32 sec.jpg')
-
-# print(ans)
-# # img=img[:,:,:]
-# # print(img.shape)
-# # img=img.reshape(img.shape[0],img.shape[1],img.shape[2])
-# # #Print count, image, heat map
-# plt.imshow(img.reshape(img.shape[1],img.shape[2],img.shape[3]))
-# # #plt.show()
-# # cv2_imshow(img)
-# plt.imshow(hmap.reshape(hmap.shape[1],hmap.shape[2]) , cmap = c.jet )
-# plt.show()
-
-# !pip freeze > requirement.txt
-
-# !cat requirement.txt
-
-# !tensorflow --version
