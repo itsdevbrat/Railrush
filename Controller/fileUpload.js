@@ -8,10 +8,12 @@ let files = {}  //will hold multiple files with key as the filename
     , {spawn} = require('child_process');
 
 const callScript = (fileName , trainInfo)=>{
-    let process = spawn("py" , [path.join(__dirname , "/../CrowdCountModel.py") , path.join(__dirname , "/../Video Uploads/"+fileName)])
+    let process = spawn("python" , [path.join(__dirname , "/../ML Model/CrowdCountModel.py") , path.join(__dirname , fileName)])
     process.stdout.on('data', (data)=>{
-        console.log(data)
+        // console.log(data)
         let s = data.toString()
+        console.log(s)
+        console.log("Model "+Number(s.split(",")[0])+Number(s.split(",")[1])+Number(s.split(",")[2]))
         calculateCrowdCount(trainInfo , Number(s.split(",")[0]) , Number(s.split(",")[1]) , Number(s.split(",")[2]))
     })
     process.stderr.on('data' , (data)=>{

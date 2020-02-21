@@ -1,5 +1,6 @@
 const express = require('express')
     , app = express()
+    , cors = require('cors')
     , server = require('http').Server(app)     //Server(requestListener?: RequestListener);
     , io = require('socket.io')(server)
     , bodyParser = require('body-parser')
@@ -10,6 +11,7 @@ const express = require('express')
 //Creating express app----------------------------------------------------------------------------
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'))
+app.use(cors())
 
 
 //Routes -------------------------------------------------------------------------------------------
@@ -20,7 +22,9 @@ app.get('/',(req,res)=>{
 fileUpload(io)
 
 app.get('/crowdCount/:trainNo',crowdCount)
-
+app.get('*',(req,res)=>{
+    res.sendStatus(404)
+})
 
 //Starting Server ------------------------------------------------------------------------------------
 server.listen(process.env.PORT || 3000,()=>{
