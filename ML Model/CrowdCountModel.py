@@ -81,7 +81,7 @@ start = time.time()
 cap = cv2.VideoCapture(os.path.join(root_dir,'../Video Uploads/'+sys.argv[1]))
 
 sec = 0
-frameRate = 1
+frameRate = 2
 #it will capture image in each 0.5 second
 os.mkdir(os.path.join(root_dir,'data4/'+sys.argv[1]))
 success = getFrame(sec)

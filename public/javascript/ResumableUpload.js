@@ -38,12 +38,13 @@ const uploadTheFile = (i) =>{
     //Connecting sockets-------------------------------------------------------------------------------
     let socket = io.connect(window.location.host)
     startTime = performance.now()
+
     //Emit Event 1 : start upload----------------------------------------------------------------------
     socket.emit('start upload' , {
         name: inputFiles[i].name, 
         size: inputFiles[i].size, 
-        type: inputFiles[i].type , 
-        train:{ trainNo: 1, start: "Virar" , dest:"Churchgate" , current:stationNames[i].innerText , timestamp:date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()}})
+        type: inputFiles[i].type, 
+        train:{ trainNo: Number(document.getElementById('trainId').value), start: "Virar" , dest:"Churchgate" , current:stationNames[i].innerText , timestamp:date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()}})
 
     //Listen to Event 1 : send next block--------------------------------------------------------------
     socket.on('send next block' , (data)=>{
