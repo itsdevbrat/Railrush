@@ -13,9 +13,9 @@ const callScript = (fileName , trainInfo)=>{
             if(err)
                 console.log('Cant delete dir')
         })
-        fs.unlink(path.join(__dirname , "/../Video Uploads/"+fileName),(err)=>{
+        fs.rmdir(path.join(__dirname , "/../Video Uploads/"+fileName),{recursive:true},(err)=>{
             if(err)
-                console.log('Cant delete video file')
+                console.log('Cant delete dir')
         })
     })
     process.stderr.on('data' , (data)=>{

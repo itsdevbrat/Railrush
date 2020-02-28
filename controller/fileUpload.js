@@ -40,7 +40,7 @@ module.exports = (io)=>{
                     }
                 }
                 console.log('new upload '+files[data.name].downloadedSize+e)
-                fs.open(path.join(__dirname, uploadDir + data.name) , 'a' ,(err,fd) =>{
+                fs.open(path.join(__dirname, uploadDir+data.name) , 'a' ,(err,fd) =>{
                     if(err)
                         console.log("fd\n"+err)
                     files[data.name].fileDescriptor = fd
