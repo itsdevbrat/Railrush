@@ -22,11 +22,11 @@ app.get('/',(req,res)=>{
 fileUpload(io)
 
 app.get('/crowdCount/:trainNo',crowdCount)
-app.get('*',(req,res)=>{
-    res.sendStatus(404)
+app.get('/*',(req,res)=>{
+    res.send("You've got to a wrong place")
 })
 
 //Starting Server ------------------------------------------------------------------------------------
 server.listen(process.env.PORT || 80,()=>{
-    console.log("Listening");
+    console.log("Listening"+require('os').cpus().length);
 })
