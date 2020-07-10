@@ -27,6 +27,7 @@ app.get('/*',(req,res)=>{
 })
 
 //Starting Server ------------------------------------------------------------------------------------
-server.listen(process.env.PORT || 80,()=>{
-    console.log("Listening"+require('os').cpus().length);
-})
+// server.listen(process.env.PORT || 80,()=>{
+//     console.log("Listening"+require('os').cpus().length);
+// })
+module.exports = app;

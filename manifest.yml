@@ -1,0 +1,6 @@
+applications:
+- name: railrush
+  command: npm start
+  instances: 1
+  memory: 256M
+
