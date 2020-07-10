@@ -2,10 +2,9 @@
 const conn_string = "mongodb+srv://devbrat:beproject-2020@railrush-7bs1k.mongodb.net/test?retryWrites=true&w=majority"
     , dbName = "Railrush"
     , MongoClient = require('mongodb').MongoClient
-    , client = new MongoClient(conn_string, { useUnifiedTopology: true })
-    , redis = require('redis');
+    , client = new MongoClient(conn_string, { useUnifiedTopology: true });
 
-const redisClient = redis.createClient()
+
 
 let db = null
 
@@ -24,7 +23,7 @@ connect();
 
 module.exports = {
     updateCrowdInfo: async (trainNo, crowdInfo) => {
-        redisClient.setex(trainNo, 3600, JSON.stringify({ crowdCount: crowdInfo.crowdCount }))
+     
         return await db.collection("trains").updateOne({ trainNo: "" + trainNo }, {
             $set: {
                 crowdInfo: {
@@ -37,12 +36,7 @@ module.exports = {
     },
     getCrowdCount: (trainNo) => {
         return new Promise((resolve, reject) => {
-            redisClient.get(trainNo, async (err, info) => {
-                try {
-                    if (info) {
-                        console.log("info" + info)
-                        resolve(JSON.parse(info).crowdCount)
-                    } else {
+           
                         let train = await db.collection("trains").findOne({ trainNo: "" + trainNo })
                         if (train) {
                             console.log(train)
@@ -51,11 +45,7 @@ module.exports = {
                         }
                         else
                             reject(new Error("train doesn't exist"))
-                    }
-                } catch (error) {
-                    reject(error)
-                }
-            })
+              
         })
     }
 }
